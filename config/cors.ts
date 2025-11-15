@@ -10,6 +10,10 @@ export default defineConfig({
     // Dominios del sitio público (con y sin www)
     if (origin === 'https://impulsorestaurantero.com') return true
     if (origin === 'https://www.impulsorestaurantero.com') return true
+
+    // 👇 NUEVO: Sitio público de La Llorona
+    if (origin === 'https://lalloronacantina.com') return true
+    if (origin === 'https://www.lalloronacantina.com') return true
     // (opcional) cualquier subdominio de impulsorestaurantero.com:
     if (/^https:\/\/([a-z0-9-]+\.)*impulsorestaurantero\.com$/.test(origin)) return true
 
