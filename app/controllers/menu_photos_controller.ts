@@ -5,7 +5,7 @@ import path from 'node:path'
 import Database from '@adonisjs/lucid/services/db'
 import MenuPhoto from '#models/menu_photo'
 import Restaurant from '#models/restaurant'
-import FtpMenuUploader from '#services/ftp_menu_uploader'
+import MenuUploader from '#services/s3_menu_uploader'
 
 export default class MenuPhotosController {
   private async getRestaurantOrFail(slugParam: string) {
@@ -113,7 +113,7 @@ export default class MenuPhotosController {
         const localPath = path.join(tmpDir, localName)
 
         // sharp + FTPS
-        const url = await FtpMenuUploader.upload({
+        const url = await MenuUploader.upload({
           restaurantSlug: restaurant.slug,
           locale,
           section,
@@ -226,11 +226,20 @@ export default class MenuPhotosController {
       }
 
       try {
-        if (typeof (FtpMenuUploader as any).delete === 'function') {
-          await (FtpMenuUploader as any).delete(photo.url)
+        if (typeof (MenuUploader as any).delete === 'function') {
+          await (MenuUploader as any).delete(photo.url)
         }
-      } catch {
-        // ignorar errores al borrar remoto
+      } catch (err: any) {
+        console.error(
+          JSON.stringify({
+            event: 'menu_photo_delete',
+            status: 'remote_delete_failed',
+            photoId: photo.id,
+            url: photo.url,
+            errorName: err?.name,
+            errorMessage: err?.message,
+          })
+        )
       }
 
       await photo.delete()

@@ -39,4 +39,10 @@ export default await Env.create(new URL('../', import.meta.url), {
   FTPS_PASS: Env.schema.string.optional(),
   FTPS_SECURE: Env.schema.boolean.optional(),
   MEDIA_BASE_URL: Env.schema.string.optional(), // ej: https://media.impulsorestaurantero.com/traspasos
+
+  S3_ENDPOINT: Env.schema.string.optional(),
+  S3_REGION: Env.schema.string.optional(),
+  S3_BUCKET: Env.schema.string.optional(),
+  S3_ACCESS_KEY_ID: Env.schema.string.optional(),
+  S3_SECRET_ACCESS_KEY: Env.schema.string.optional(),
 })
